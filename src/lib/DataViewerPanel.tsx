@@ -41,6 +41,8 @@ interface Props {
     sortKeys?: Array<string>
     filterKeys?: Array<string>
     defaultColumns?: Array<string>
+    selectableRows?: string
+    onDeleted?: (deleted: Array<Map<string, any>>) => boolean
 }
 
 interface State {
@@ -118,9 +120,16 @@ class DataViewerPanel extends React.Component<Props, State> {
                     {
                         this.state.data.rows.length && this.state.isExpanded &&
                         (
-                            <DataViewer columns={this.state.data.columns} data={this.state.data.rows} filterKeys={this.state.filterKeys}
-                                graph={this.state.data.graph} details={this.state.data.details} onFilterReset={this.onFilterReset.bind(this)}
-                                defaultColumns={this.props.defaultColumns} />
+                            <DataViewer
+                                columns={this.state.data.columns}
+                                data={this.state.data.rows}
+                                filterKeys={this.state.filterKeys}
+                                graph={this.state.data.graph}
+                                details={this.state.data.details}
+                                onFilterReset={this.onFilterReset.bind(this)}
+                                defaultColumns={this.props.defaultColumns}
+                                selectableRows={this.props.selectableRows}
+                                onDeleted={this.props.onDeleted} />
                         )
                     }
                 </ExpansionPanelDetails>

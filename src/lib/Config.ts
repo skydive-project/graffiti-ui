@@ -46,6 +46,7 @@ export interface NodeDataField {
     filterKeys?: (data: any) => Array<string>
     normalizer?: (data: any) => any
     graph?: (data: any) => GraphField
+    selectableRows?: string
 }
 
 export interface LinkDataField {

@@ -191,8 +191,19 @@ class SelectionPanel extends React.Component<Props, State> {
                 var suffix = title.toLowerCase().replace(" ", "-")
                 return (
                   <DataPanel key={"dataviewer-" + el.id + "-" + suffix} title={title}
-                    defaultExpanded={entry.expanded} data={data} exclude={exclude} sortKeys={sortKeys} filterKeys={filterKeys}
-                    normalizer={entry.normalizer} graph={entry.graph} icon={entry.icon} iconClass={entry.iconClass} />
+                    defaultExpanded={entry.expanded}
+                    data={data}
+                    exclude={exclude}
+                    sortKeys={sortKeys}
+                    filterKeys={filterKeys}
+                    normalizer={entry.normalizer}
+                    graph={entry.graph}
+                    icon={entry.icon}
+                    iconClass={entry.iconClass}
+                    selectableRows={entry.selectableRows}
+                    onDeleted={entry.onDeleted}
+                    defaultColumns={entry.defaultColumns}
+                  />
                 )
               }
             })

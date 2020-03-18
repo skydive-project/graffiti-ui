@@ -16,12 +16,10 @@
  */
 
 import * as React from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
 import CodeIcon from '@material-ui/icons/Code'
 
-import { styles } from '../DataPanels/PanelStyles'
 import { Node, Link } from '../Topology'
 
 interface Props {
@@ -29,7 +27,7 @@ interface Props {
     onClick: (el: Node | Link) => void
 }
 
-class GremlinButton extends React.Component<Props> {
+export default class GremlinButton extends React.Component<Props> {
 
     constructor(props: Props) {
         super(props)
@@ -48,5 +46,3 @@ class GremlinButton extends React.Component<Props> {
         )
     }
 }
-
-export default withStyles(styles)(GremlinButton)

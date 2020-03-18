@@ -130,7 +130,7 @@ export const styles = (theme: Theme) => createStyles({
     flexDirection: 'column',
     width: 600,
     [theme.breakpoints.down('xl')]: {
-      width: 500
+      width: 650
     },
     height: `100%`,
     transition: theme.transitions.create('width', {

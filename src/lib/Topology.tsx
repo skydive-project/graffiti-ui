@@ -423,8 +423,8 @@ export class Topology extends React.Component<Props, {}> {
             .attr("class", "context-menu")
 
         this.liner = line()
-            .x((d: {x: number}) => d.x)
-            .y((d: {y: number}) => d.y)
+            .x((d: { x: number }) => d.x)
+            .y((d: { y: number }) => d.y)
             .curve(curveCardinalClosed.tension(0.7))
     }
 
@@ -1302,7 +1302,7 @@ export class Topology extends React.Component<Props, {}> {
                     .attr("x", x)
                     .attr("y", y + paddingY)
                     .attr("dy", dy)
-                    .text((d: any)  => item.text)
+                    .text((d: any) => item.text)
 
                 let element = text.node()
                 if (!element) {
@@ -1686,8 +1686,8 @@ export class Topology extends React.Component<Props, {}> {
 
     private renderHieraLinks(root: any) {
         const hieraLinker = linkVertical()
-            .x((d: {x: number}) => d.x)
-            .y((d: {y: number}) => d.y)
+            .x((d: { x: number }) => d.x)
+            .y((d: { y: number }) => d.y)
 
         var hieraLink = this.gHieraLinks.selectAll('path.hiera-link')
             .data(root.links(), (d: any) => d.source.data.id + d.target.data.id)
@@ -1723,7 +1723,7 @@ export class Topology extends React.Component<Props, {}> {
             .style("opacity", 0)
         group.exit().remove()
 
-        const curlyBrace = (x1: number, y1: number, x2: number, y2:  number, w: number) => {
+        const curlyBrace = (x1: number, y1: number, x2: number, y2: number, w: number) => {
             var len = y2 - y1
 
             var qx1 = x1 - w, qy1 = y1
@@ -2219,8 +2219,8 @@ export class Topology extends React.Component<Props, {}> {
             }
 
             const liner = line()
-                .x((d: {x: number}) => d.x)
-                .y((d: {y: number}) => d.y)
+                .x((d: { x: number }) => d.x)
+                .y((d: { y: number }) => d.y)
                 .curve(curveCatmullRom.alpha(0.01))
 
             return liner(points)

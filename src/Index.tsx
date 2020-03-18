@@ -33,8 +33,8 @@ import GremlinButton from './lib/ActionButtons/Gremlin'
 import GremlinPanel from './lib/DataPanels/Gremlin'
 import { Node, Link } from './lib/Topology'
 
-import Logo from '../assets/Logo.png'
-import LogoLarge from '../assets/Logo-large.png'
+import Logo from '../assets/logo.png'
+import LogoLarge from '../assets/logo-large.png'
 
 const queryString = require('query-string')
 

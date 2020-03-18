@@ -70,6 +70,7 @@ interface Props extends WithSnackbarProps {
   actionButtons?: (el: Node | Link) => JSX.Element
   dataPanels?: (el: Node | Link) => JSX.Element
   onLogout?: () => void
+  onRef?: (app: App) => void
 
   selectElement: typeof selectElement
   unselectElement: typeof unselectElement
@@ -146,6 +147,10 @@ export class App extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    if (this.props.onRef) {
+      this.props.onRef(this)
+    }
+
     if (this.props.configURL) {
       this.config.appendURL("URL", this.props.configURL)
     }
@@ -787,7 +792,7 @@ export class App extends React.Component<Props, State> {
     )
   }
 
-  renderNodeTagButtons(classes: any) {  
+  renderNodeTagButtons(classes: any) {
     return (
       <Container className={classes.nodeTagsPanel}>
         {Array.from(this.state.nodeTagStates.keys()).sort((a, b) => {
@@ -812,45 +817,49 @@ export class App extends React.Component<Props, State> {
   renderMenuButtons(classes: any) {
     return (
       <div>
-        <IconButton
-          aria-controls="menu-selection"
-          aria-haspopup="true"
-          onClick={(event: React.MouseEvent<HTMLElement>) => this.props.selection.length > 0 && this.openMenu("selection", event)}
-          color="inherit">
-          <Badge badgeContent={this.props.selection.length} color="secondary">
-            <ListIcon />
-          </Badge>
-        </IconButton>
-        <Menu
-          id="menu-selection"
-          anchorEl={this.state.anchorEl.get("selection")}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={Boolean(this.state.anchorEl.get("selection"))}
-          onClose={this.closeMenu.bind(this, "selection")}>
-          <MenuItem onClick={() => { this.closeMenu("selection"); this.openSelection() }}>
-            <ListItemIcon>
-              <KeyboardArrowDown fontSize="small" />
-            </ListItemIcon>
-            <Typography>Show selection</Typography>
-          </MenuItem>
-          <Divider />
-          {this.renderSelectionMenuItem(classes)}
-          <Divider />
-          <MenuItem onClick={() => { this.closeMenu("selection"); this.unselectAll() }}>
-            <ListItemIcon>
-              <RemoveShoppingCartIcon fontSize="small" />
-            </ListItemIcon>
-            <Typography>Unselect all</Typography>
-          </MenuItem>
-        </Menu>
+        {this.props.selection.length > 0 &&
+          <React.Fragment>
+            <IconButton
+              aria-controls="menu-selection"
+              aria-haspopup="true"
+              onClick={(event: React.MouseEvent<HTMLElement>) => this.props.selection.length > 0 && this.openMenu("selection", event)}
+              color="inherit">
+              <Badge badgeContent={this.props.selection.length} color="secondary">
+                <ListIcon />
+              </Badge>
+            </IconButton>
+            <Menu
+              id="menu-selection"
+              anchorEl={this.state.anchorEl.get("selection")}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(this.state.anchorEl.get("selection"))}
+              onClose={this.closeMenu.bind(this, "selection")}>
+              <MenuItem onClick={() => { this.closeMenu("selection"); this.openSelection() }}>
+                <ListItemIcon>
+                  <KeyboardArrowDown fontSize="small" />
+                </ListItemIcon>
+                <Typography>Show selection</Typography>
+              </MenuItem>
+              <Divider />
+              {this.renderSelectionMenuItem(classes)}
+              <Divider />
+              <MenuItem onClick={() => { this.closeMenu("selection"); this.unselectAll() }}>
+                <ListItemIcon>
+                  <RemoveShoppingCartIcon fontSize="small" />
+                </ListItemIcon>
+                <Typography>Unselect all</Typography>
+              </MenuItem>
+            </Menu>
+          </React.Fragment>
+        }
         <IconButton
           aria-label="account of current user"
           aria-controls="menu-profile"

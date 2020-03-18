@@ -37,6 +37,8 @@ interface Props {
     filterKeys?: Array<string>
     onFilterReset?: () => void
     defaultColumns?: Array<string>
+    selectableRows?: string
+    onDeleted?: (deleted: Array<Map<string, any>>) => boolean
 }
 
 interface State {
@@ -46,6 +48,7 @@ interface State {
     graph?: Graph
     rowsExpanded: Array<number>
     defaultColumns?: Array<string>
+    rowsSelected: Array<number>
 }
 
 export class DataViewer extends React.Component<Props, State> {
@@ -62,7 +65,8 @@ export class DataViewer extends React.Component<Props, State> {
             sortField: "",
             sortDirection: "none",
             filterList: new Map<string, Array<any>>(),
-            rowsExpanded: new Array<number>()
+            rowsExpanded: new Array<number>(),
+            rowsSelected: new Array<number>()
         }
     }
 
@@ -93,7 +97,7 @@ export class DataViewer extends React.Component<Props, State> {
     render() {
         const options = {
             filterType: 'multiselect',
-            selectableRows: 'none',
+            selectableRows: this.props.selectableRows,
             responsive: 'stacked',
             print: false,
             download: false,
@@ -133,6 +137,34 @@ export class DataViewer extends React.Component<Props, State> {
                 )
             },
             rowsExpanded: this.state.rowsExpanded,
+            onRowsDelete: (rows: { data: Array<{ index: number, dataIndex: number }> }): void | boolean => {
+                if (!this.props.onDeleted) {
+                    return true
+                }
+
+                var deleted = new Array<Map<string, any>>()
+
+                for (let a of rows.data) {
+                    if (a.dataIndex < this.props.data.length) {
+                        let entry = new Map<string, any>()
+                        let data = this.props.data[a.dataIndex]
+                        this.props.columns.forEach((column: Column, i: number) => {
+                            entry[column.name] = data[i]
+                        })
+                        deleted.push(entry)
+                    }
+                }
+
+                return this.props.onDeleted(deleted)
+            },
+            rowsSelected: this.state.rowsSelected,
+            onRowsSelect: (currentRowsSelected: any, allRowsSelected: Array<{ index: number, dataIndex: number }>): void => {
+                var selected = new Array<number>()
+                for (let a of allRowsSelected) {
+                    selected.push(a.dataIndex)
+                }
+                this.setState({ rowsSelected: selected })
+            },
             onRowsExpand: (currentRowsExpanded: any, allRowsExpanded: any) => {
                 this.setState({ rowsExpanded: allRowsExpanded.map((entry: any) => entry.dataIndex) })
             },
@@ -140,8 +172,6 @@ export class DataViewer extends React.Component<Props, State> {
                 this.setState({ sortField: field, sortDirection: direction })
             },
             onColumnViewChange: (column: string, action: string) => {
-                console.log(column)
-                console.log(action)
             },
             onFilterChange: (field: string, filterList: Array<any>) => {
                 var newList = new Array<any>()
